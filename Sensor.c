@@ -18,7 +18,10 @@
 
 #define SENSOR_I2C_ADDRESS (0x40U)
 
-#define SENSOR_CONFIGURE_COMMAND (0x50U)
+#define SENSOR_CONFIGURE_COMMAND        (0x50U)
+#define SENSOR_CONFIGURE_COMMAND_SIZE   (5U)
+
+#define SENSOR_READ_COMMAND_SIZE        (4U)
 
 /*****************************************************************************************************************************
  * TYPE DEFINITIONS
@@ -55,7 +58,7 @@ static bool bInitialized = false;
 Platform_Return_t Sensor_Init(void)
 {
     Platform_Return_t eRetVal = E_NOT_OK;
-    uint8_t au8InitConfig[5] = { SENSOR_CONFIGURE_COMMAND, 0x01U, 0x02U, 0x03U, 0x04U };
+    uint8_t au8InitConfig[SENSOR_CONFIGURE_COMMAND_SIZE] = { SENSOR_CONFIGURE_COMMAND, 0x01U, 0x02U, 0x03U, 0x04U };
 
     if(E_OK == I2C_Transmit(SENSOR_I2C_ADDRESS, au8InitConfig, (uint16_t) sizeof(au8InitConfig)))
     {
@@ -77,7 +80,7 @@ Platform_Return_t Sensor_Init(void)
 Platform_Return_t Sensor_Read(uint32_t * const pu32Measurement)
 {
     Platform_Return_t eRetVal = E_NOT_OK;
-    uint8_t au8Measurement[4];
+    uint8_t au8Measurement[SENSOR_READ_COMMAND_SIZE];
 
     if(NULL == pu32Measurement)
     {
